@@ -1,0 +1,59 @@
+﻿@model List<Orca.Models.Game>
+
+@{
+    ViewData["Title"] = "Oyunları Yönet";
+    var categories = ViewBag.Categories as List<Orca.Models.Category>;
+}
+
+<div class="section">
+    <div class="section-header">
+        <div class="section-title">Oyunları Yönet</div>
+        <a class="btn-primary" asp-controller="Admin" asp-action="CreateGame">+ Yeni Oyun Ekle</a>
+    </div>
+
+    <div class="admin-table-wrap">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Resim</th>
+                    <th>Oyun</th>
+                    <th>Kategori</th>
+                    <th>Fiyat</th>
+                    <th>Stok</th>
+                    <th>Aktif</th>
+                    <th>Öne Çıkan</th>
+                    <th>İşlem</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var game in Model)
+                {
+                    <tr>
+                        <td>
+                            @if (!string.IsNullOrEmpty(game.ImageUrl))
+                            {
+                                <img src="@game.ImageUrl" style="width:60px;height:40px;object-fit:cover;border-radius:4px;" />
+                            }
+                            else
+                            {
+                                <span>🎮</span>
+                            }
+                        </td>
+                        <td>@game.Title</td>
+                        <td>@game.Category?.Name</td>
+                        <td>₺@game.Price</td>
+                        <td>@game.Stock</td>
+                        <td>@(game.IsActive ? "✅" : "❌")</td>
+                        <td>@(game.IsFeatured ? "✅" : "❌")</td>
+                        <td>
+                            <a class="btn-detail" asp-controller="Admin" asp-action="EditGame" asp-route-id="@game.GameId">Düzenle</a>
+                            <a class="btn-remove" asp-controller="Admin" asp-action="DeleteGame" asp-route-id="@game.GameId" onclick="return confirm('Silmek istediğine emin misin?')">
+                                <i class="ti ti-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

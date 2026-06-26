@@ -1,0 +1,61 @@
+﻿@model List<Orca.Models.CartItem>
+
+@{
+    ViewData["Title"] = "Ödeme";
+}
+
+<div class="section">
+    <div class="section-header">
+        <div class="section-title">Ödeme</div>
+    </div>
+
+    <div class="checkout-grid">
+        <div class="checkout-form">
+            <form asp-controller="Cart" asp-action="CompleteOrder" method="post">
+                <div class="form-group">
+                    <label>Ad Soyad</label>
+                    <input type="text" name="fullName" class="form-input" placeholder="Ad Soyad" pattern="[A-Za-zÇçĞğİıÖöŞşÜü ]{3,}" title="Geçerli bir ad soyad girin" required />
+                </div>
+                <div class="form-group">
+                    <label>E-posta</label>
+                    <input type="email" name="email" class="form-input" placeholder="ornek@email.com" required />
+                </div>
+                <div class="form-group">
+                    <label>Adres</label>
+                    <input type="text" name="address" class="form-input" placeholder="Teslimat adresi" minlength="10" title="En az 10 karakter girin" required />
+                </div>
+                <div class="form-group">
+                    <label>Kart Numarası</label>
+                    <input type="text" name="cardNumber" class="form-input" placeholder="**** **** **** ****" maxlength="19" pattern="\d{4} \d{4} \d{4} \d{4}" title="16 haneli kart numarası girin" oninput="formatCard(this)" required />
+                </div>
+                <button type="submit" class="btn-primary" style="width:100%;margin-top:1rem;">Siparişi Tamamla</button>
+            </form>
+        </div>
+
+        <div class="checkout-summary">
+            <div class="section-title" style="margin-bottom:1rem;">Sipariş Özeti</div>
+            @foreach (var item in Model)
+            {
+                <div class="cart-item" style="margin-bottom:0.5rem;">
+                    <div class="cart-details">
+                        <div class="cart-title">@item.Title</div>
+                        <div class="cart-qty">x@(item.Quantity)</div>
+                    </div>
+                    <div class="cart-price">₺@(item.Price * item.Quantity)</div>
+                </div>
+            }
+            <div class="cart-total" style="margin-top:1rem;">
+                <span>Toplam</span>
+                <span class="game-price">₺@Model.Sum(c => c.Price * c.Quantity)</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function formatCard(input) {
+        var val = input.value.replace(/\D/g, '').substring(0, 16);
+        var formatted = val.match(/.{1,4}/g);
+        input.value = formatted ? formatted.join(' ') : val;
+    }
+</script>

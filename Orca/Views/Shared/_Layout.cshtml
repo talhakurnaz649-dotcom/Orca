@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Orca Games</title>
+    <link rel="stylesheet" href="~/css/orca.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@@tabler/icons-webfont@latest/tabler-icons.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+<nav class="navbar">
+    <a class="logo" asp-controller="Home" asp-action="Index">ORC<span>A</span></a>
+
+    <ul class="nav-links">
+        <li><a asp-controller="Home" asp-action="Index">Ana Sayfa</a></li>
+        <li><a asp-controller="Game" asp-action="Index">Oyunlar</a></li>
+    </ul>
+
+    <div class="nav-right">
+            <form asp-controller="Game" asp-action="Index" method="get" style="display:inline">
+                <input class="search-bar" type="text" name="search" placeholder="Oyun ara..." />
+                <button class="search-btn" type="submit">Ara</button>
+            </form>
+
+        @if (Context.Session.GetString("Username") != null)
+{
+    @if (Context.Session.GetString("IsAdmin") == "true")
+    {
+        <a asp-controller="Admin" asp-action="Index" style="color:#b500ff;font-size:13px;font-weight:600;">⚙ Admin</a>
+    }
+    <a style="color:#7777aa;font-size:13px;" asp-controller="Account" asp-action="Profile">👤 @Context.Session.GetString("Username")</a>
+    <a class="btn-cart" asp-controller="Account" asp-action="Logout">Çıkış</a>
+}
+        else
+        {
+            <a class="btn-cart" asp-controller="Account" asp-action="Login">Giriş Yap</a>
+        }
+
+        <a class="btn-cart" asp-controller="Cart" asp-action="Index">
+            <i class="ti ti-shopping-cart"></i> Sepet
+        </a>
+    </div>
+</nav>
+
+<main>
+    @RenderBody()
+</main>
+
+<footer class="site-footer">
+    <div class="footer-logo">ORCA</div>
+    <div class="footer-links">
+        <a href="#">Hakkımızda</a>
+        <a href="#">Gizlilik</a>
+        <a href="#">İletişim</a>
+    </div>
+    <div class="footer-copy">© 2026 Orca Games</div>
+
+</body>
+</html>

@@ -1,0 +1,44 @@
+﻿@model List<Orca.Models.Order>
+
+@{
+    ViewData["Title"] = "Siparişler";
+}
+
+<div class="section">
+    <div class="section-header">
+        <div class="section-title">Siparişler</div>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <p style="color:#7777aa;">Henüz sipariş yok.</p>
+    }
+    else
+    {
+        <div class="admin-table-wrap">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Kullanıcı</th>
+                        <th>Toplam</th>
+                        <th>Durum</th>
+                        <th>Tarih</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var order in Model)
+                    {
+                        <tr>
+                            <td>#@order.OrderId</td>
+                            <td>@order.User?.Username</td>
+                            <td>₺@order.TotalAmount</td>
+                            <td>@order.Status</td>
+                            <td>@order.OrderDate.ToString("dd.MM.yyyy")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

@@ -1,0 +1,79 @@
+﻿@{
+    ViewData["Title"] = "Admin Panel";
+}
+
+<div class="section">
+    <div class="section-header">
+        <div class="section-title">Admin Panel</div>
+    </div>
+
+    <div class="admin-stats">
+        <div class="stat-card">
+            <i class="ti ti-device-gamepad-2"></i>
+            <div class="stat-value">@ViewBag.TotalGames</div>
+            <div class="stat-label">Toplam Oyun</div>
+        </div>
+        <div class="stat-card">
+            <i class="ti ti-users"></i>
+            <div class="stat-value">@ViewBag.TotalUsers</div>
+            <div class="stat-label">Toplam Kullanıcı</div>
+        </div>
+        <div class="stat-card">
+            <i class="ti ti-shopping-bag"></i>
+            <div class="stat-value">@ViewBag.TotalOrders</div>
+            <div class="stat-label">Toplam Sipariş</div>
+        </div>
+        <div class="stat-card">
+            <i class="ti ti-currency-lira"></i>
+            <div class="stat-value">₺@ViewBag.TotalRevenue</div>
+            <div class="stat-label">Toplam Gelir</div>
+        </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:2rem;">
+        <div class="auth-card">
+            <div class="section-title" style="margin-bottom:1rem;font-size:1rem;">📦 Son Siparişler</div>
+            @if (ViewBag.RecentOrders != null)
+            {
+                @foreach (var order in ViewBag.RecentOrders as List<Orca.Models.Order>)
+                {
+                    <div style="display:flex;justify-content:space-between;padding:0.5rem 0;border-bottom:1px solid #1a1a2e;">
+                        <span style="color:#7777aa;font-size:13px;">#@order.OrderId — @order.User?.Username</span>
+                        <span style="color:#00e5ff;font-size:13px;">₺@order.TotalAmount</span>
+                    </div>
+                }
+            }
+            <a asp-controller="Admin" asp-action="Orders" style="display:block;margin-top:1rem;color:#b500ff;font-size:13px;">Tümünü Gör →</a>
+        </div>
+
+        <div class="auth-card">
+            <div class="section-title" style="margin-bottom:1rem;font-size:1rem;">👥 Son Kullanıcılar</div>
+            @if (ViewBag.RecentUsers != null)
+            {
+                @foreach (var user in ViewBag.RecentUsers as List<Orca.Models.User>)
+                {
+                    <div style="display:flex;justify-content:space-between;padding:0.5rem 0;border-bottom:1px solid #1a1a2e;">
+                        <span style="color:#7777aa;font-size:13px;">👤 @user.Username</span>
+                        <span style="color:#7777aa;font-size:13px;">@user.CreatedAt.ToString("dd.MM.yyyy")</span>
+                    </div>
+                }
+            }
+            <a asp-controller="Admin" asp-action="Users" style="display:block;margin-top:1rem;color:#b500ff;font-size:13px;">Tümünü Gör →</a>
+        </div>
+    </div>
+
+    <div class="admin-menu" style="margin-top:2rem;">
+        <a class="admin-menu-item" asp-controller="Admin" asp-action="Games">
+            <i class="ti ti-device-gamepad-2"></i>
+            <span>Oyunları Yönet</span>
+        </a>
+        <a class="admin-menu-item" asp-controller="Admin" asp-action="Users">
+            <i class="ti ti-users"></i>
+            <span>Kullanıcıları Gör</span>
+        </a>
+        <a class="admin-menu-item" asp-controller="Admin" asp-action="Orders">
+            <i class="ti ti-shopping-bag"></i>
+            <span>Siparişleri Gör</span>
+        </a>
+    </div>
+</div>

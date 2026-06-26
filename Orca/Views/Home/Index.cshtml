@@ -1,0 +1,84 @@
+﻿@{
+    ViewData["Title"] = "Ana Sayfa";
+    var games = ViewBag.FeaturedGames as List<Orca.Models.Game>;
+    var categories = ViewBag.Categories as List<Orca.Models.Category>;
+}
+
+<div class="hero">
+    <div class="hero-inner">
+        <div class="hero-text">
+            <div class="hero-tag">⚡ Orca Games'e Hoş Geldin</div>
+            <h1>En İyi <em>PC & Konsol</em> Oyunları</h1>
+            <p>500'den fazla oyun, anında dijital teslimat ve en iyi fiyatlar.</p>
+            <div class="hero-btns">
+                <a class="btn-primary" asp-controller="Game" asp-action="Index">Tüm Oyunları Gör</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    <div class="section-header">
+        <div class="section-title">Öne Çıkan Oyunlar</div>
+        <a class="see-all" asp-controller="Game" asp-action="Index">Tümünü Gör →</a>
+    </div>
+
+    <div class="games-grid">
+        @if (games != null)
+        {
+            @foreach (var game in games)
+            {
+                <div class="game-card">
+                    <div class="game-thumb">
+                        @if (!string.IsNullOrEmpty(game.ImageUrl))
+                        {
+                            <img src="@game.ImageUrl" alt="@game.Title" />
+                        }
+                        else
+                        {
+                            <span>🎮</span>
+                        }
+                    </div>
+                    <div class="game-info">
+                        <div class="game-title">@game.Title</div>
+                        <div class="game-genre">@game.Category?.Name</div>
+                        <div class="game-footer">
+                            @if (game.Price == 0)
+                            {
+                                <span class="game-price free">Ücretsiz</span>
+                            }
+                            else
+                            {
+                                <span class="game-price">₺@game.Price</span>
+                            }
+                        </div>
+                        <div class="card-actions">
+                            <a class="btn-detail" asp-controller="Game" asp-action="Detail" asp-route-id="@game.GameId">Detay</a>
+                            <a class="btn-add" asp-controller="Cart" asp-action="Add" asp-route-gameId="@game.GameId">
+                                <i class="ti ti-shopping-cart-plus"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+<div class="section">
+    <div class="section-header">
+        <div class="section-title">Kategoriler</div>
+    </div>
+    <div class="genre-grid">
+        @if (categories != null)
+        {
+            @foreach (var cat in categories)
+            {
+                <a class="genre-card" asp-controller="Game" asp-action="Index" asp-route-categoryId="@cat.CategoryId">
+                    <i class="ti ti-chess"></i>
+                    <div class="genre-name">@cat.Name</div>
+                </a>
+            }
+        }
+    </div>
+</div>

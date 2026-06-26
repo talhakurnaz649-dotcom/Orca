@@ -1,0 +1,36 @@
+﻿@{
+    ViewData["Title"] = "Kayıt Ol";
+}
+
+<div class="section" style="max-width:420px;margin:0 auto;">
+    <div class="auth-card">
+        <h1 class="detail-title" style="margin-bottom:0.5rem;">Kayıt Ol</h1>
+        <p style="color:#7777aa;font-size:13px;margin-bottom:1.5rem;">Yeni hesap oluştur</p>
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="auth-error">@ViewBag.Error</div>
+        }
+
+        <form asp-controller="Account" asp-action="Register" method="post">
+            <div class="form-group">
+                <label>Kullanıcı Adı</label>
+                <input type="text" name="username" class="form-input" placeholder="Kullanıcı adın" required />
+            </div>
+            <div class="form-group">
+                <label>E-posta</label>
+                <input type="email" name="email" class="form-input" placeholder="ornek@email.com" required />
+            </div>
+            <div class="form-group">
+                <label>Şifre</label>
+                <input type="password" name="password" class="form-input" placeholder="Şifren" required />
+            </div>
+            <button type="submit" class="btn-primary" style="width:100%;margin-top:0.5rem;">Kayıt Ol</button>
+        </form>
+
+        <p style="text-align:center;margin-top:1rem;font-size:13px;color:#7777aa;">
+            Zaten hesabın var mı?
+            <a asp-controller="Account" asp-action="Login" style="color:#00f5ff;">Giriş Yap</a>
+        </p>
+    </div>
+</div>

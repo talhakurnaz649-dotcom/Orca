@@ -1,0 +1,79 @@
+﻿@model Orca.Models.Game
+
+@{
+    ViewData["Title"] = "Oyun Düzenle";
+    var categories = ViewBag.Categories as List<Orca.Models.Category>;
+}
+
+<div class="section" style="max-width:600px;margin:0 auto;">
+    <div class="section-header">
+        <div class="section-title">Oyun Düzenle</div>
+    </div>
+
+    <div class="auth-card">
+        <form asp-controller="Admin" asp-action="EditGame" method="post">
+            <input type="hidden" name="gameId" value="@Model.GameId" />
+            <div class="form-group">
+                <label>Oyun Adı</label>
+                <input type="text" name="title" class="form-input" value="@Model.Title" required />
+            </div>
+            <div class="form-group">
+                <label>Açıklama</label>
+                <textarea name="description" class="form-input" rows="4" style="resize:vertical;">@Model.Description</textarea>
+            </div>
+            <div class="form-group">
+                <label>Fiyat</label>
+                <input type="number" name="price" class="form-input" step="0.01" value="@Model.Price" required />
+            </div>
+            <div class="form-group">
+                <label>Eski Fiyat (opsiyonel)</label>
+                <input type="number" name="oldPrice" class="form-input" step="0.01" value="@Model.OldPrice" />
+            </div>
+            <div class="form-group">
+                <label>Resim URL</label>
+                <input type="text" name="imageUrl" class="form-input" value="@Model.ImageUrl" />
+            </div>
+            <div class="form-group">
+                <label>Kategori</label>
+                <select name="categoryId" class="form-input">
+                    @if (categories != null)
+                    {
+                        @foreach (var cat in categories)
+                        {
+                            @if (cat.CategoryId == Model.CategoryId)
+{
+    <option value="@cat.CategoryId" selected>@cat.Name</option>
+}
+else
+{
+    <option value="@cat.CategoryId">@cat.Name</option>
+}
+                        }
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Platform</label>
+                <input type="text" name="platform" class="form-input" value="@Model.Platform" required />
+            </div>
+            <div class="form-group">
+                <label>Puan (0-5)</label>
+                <input type="number" name="rating" class="form-input" step="0.1" min="0" max="5" value="@Model.Rating" required />
+            </div>
+            <div class="form-group">
+                <label>Stok</label>
+                <input type="number" name="stock" class="form-input" value="@Model.Stock" required />
+            </div>
+            <div class="form-group" style="display:flex;gap:1rem;">
+                <label style="display:flex;align-items:center;gap:6px;">
+                    <input type="checkbox" name="isActive" value="true" @(Model.IsActive ? "checked" : "") /> Aktif
+                </label>
+                <label style="display:flex;align-items:center;gap:6px;">
+                    <input type="checkbox" name="isFeatured" value="true" @(Model.IsFeatured ? "checked" : "") /> Öne Çıkan
+                </label>
+            </div>
+            <button type="submit" class="btn-primary" style="width:100%;margin-top:0.5rem;">Kaydet</button>
+            <a class="btn-secondary" asp-controller="Admin" asp-action="Games" style="display:block;text-align:center;margin-top:0.5rem;">Geri Dön</a>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,70 @@
+﻿@model List<Orca.Models.Game>
+
+@{
+    ViewData["Title"] = "Oyunlar";
+    var categories = ViewBag.Categories as List<Orca.Models.Category>;
+}
+
+<div class="section">
+    <div class="section-header">
+        <div class="section-title">Tüm Oyunlar</div>
+    </div>
+
+    <div class="filter-tabs">
+        <a class="filter-tab @(ViewBag.SelectedCategory == null ? "active" : "")"
+           asp-controller="Game" asp-action="Index">Tümü</a>
+
+        @if (categories != null)
+        {
+            @foreach (var cat in categories)
+            {
+                <a class="filter-tab @(ViewBag.SelectedCategory == cat.CategoryId ? "active" : "")"
+                   asp-controller="Game" asp-action="Index" asp-route-categoryId="@cat.CategoryId">
+                    @cat.Name
+                </a>
+            }
+        }
+    </div>
+
+    <div class="games-grid">
+        @foreach (var game in Model)
+        {
+            <div class="game-card">
+                <div class="game-thumb">
+                    @if (!string.IsNullOrEmpty(game.ImageUrl))
+                    {
+                        <img src="@game.ImageUrl" alt="@game.Title" />
+                    }
+                    else
+                    {
+                        <span>🎮</span>
+                    }
+                </div>
+                <div class="game-info">
+                    <div class="game-title">@game.Title</div>
+                    <div class="game-genre">@game.Category?.Name</div>
+                    <div class="game-footer">
+                        @if (game.Price == 0)
+                        {
+                            <span class="game-price free">Ücretsiz</span>
+                        }
+                        else
+                        {
+                            <span class="game-price">₺@game.Price</span>
+                        }
+                        @if (game.OldPrice.HasValue)
+                        {
+                            <span class="price-old">₺@game.OldPrice</span>
+                        }
+                    </div>
+                    <div class="card-actions">
+                        <a class="btn-detail" asp-controller="Game" asp-action="Detail" asp-route-id="@game.GameId">Detay</a>
+                        <a class="btn-add" asp-controller="Cart" asp-action="Add" asp-route-gameId="@game.GameId">
+                            <i class="ti ti-shopping-cart-plus"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

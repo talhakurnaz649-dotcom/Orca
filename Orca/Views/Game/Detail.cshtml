@@ -1,0 +1,88 @@
+﻿@model Orca.Models.Game
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="section">
+    <div class="detail-card">
+        <div class="detail-thumb">
+            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+            {
+                <img src="@Model.ImageUrl" alt="@Model.Title" style="width:100%;border-radius:12px;" />
+            }
+            else
+            {
+                <span>🎮</span>
+            }
+        </div>
+        <div class="detail-info">
+            <div class="detail-category">@Model.Category?.Name</div>
+            <h1 class="detail-title">@Model.Title</h1>
+
+            <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1rem;">
+                <span class="badge-platform">@Model.Platform</span>
+                <span class="game-rating">⭐ @Model.Rating / 5</span>
+                <span style="color:#7777aa;font-size:13px;">📦 Stok: @Model.Stock</span>
+                <span style="color:#7777aa;font-size:13px;">📅 @Model.CreatedAt.ToString("dd.MM.yyyy")</span>
+            </div>
+
+            <p class="detail-desc">@Model.Description</p>
+
+            <div class="detail-price-row">
+                <span class="game-price big">₺@Model.Price</span>
+                @if (Model.OldPrice.HasValue)
+                {
+                    <span class="price-old">₺@Model.OldPrice</span>
+                    <span class="discount-badge">İndirimli</span>
+                }
+            </div>
+
+            @if (Model.Stock > 0)
+            {
+                <a class="btn-primary" asp-controller="Cart" asp-action="Add" asp-route-gameId="@Model.GameId">
+                    <i class="ti ti-shopping-cart-plus"></i> Sepete Ekle
+                </a>
+            }
+            else
+            {
+                <button class="btn-primary" disabled style="opacity:0.5;cursor:not-allowed;">Stokta Yok</button>
+            }
+
+            <a class="btn-secondary" asp-controller="Game" asp-action="Index">← Geri Dön</a>
+        </div>
+    </div>
+
+    @* Benzer Oyunlar *@
+    @if (ViewBag.SimilarGames != null)
+    {
+        <div style="margin-top:3rem;">
+            <div class="section-header">
+                <div class="section-title">Benzer Oyunlar</div>
+            </div>
+            <div class="games-grid">
+                @foreach (var game in ViewBag.SimilarGames as List<Orca.Models.Game>)
+                {
+                    <div class="game-card">
+                        <div class="game-thumb">
+                            @if (!string.IsNullOrEmpty(game.ImageUrl))
+                            {
+                                <img src="@game.ImageUrl" alt="@game.Title" />
+                            }
+                            else
+                            {
+                                <span>🎮</span>
+                            }
+                        </div>
+                        <div class="game-info">
+                            <div class="game-category">@game.Category?.Name</div>
+                            <div class="game-title">@game.Title</div>
+                            <div class="game-price">₺@game.Price</div>
+                            <a class="btn-secondary" asp-controller="Game" asp-action="Detail" asp-route-id="@game.GameId">Detay</a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>

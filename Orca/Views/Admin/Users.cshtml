@@ -1,0 +1,37 @@
+﻿@model List<Orca.Models.User>
+
+@{
+    ViewData["Title"] = "Kullanıcılar";
+}
+
+<div class="section">
+    <div class="section-header">
+        <div class="section-title">Kullanıcılar</div>
+    </div>
+
+    <div class="admin-table-wrap">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Kullanıcı Adı</th>
+                    <th>E-posta</th>
+                    <th>Admin</th>
+                    <th>Kayıt Tarihi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td>@user.UserId</td>
+                        <td>@user.Username</td>
+                        <td>@user.Email</td>
+                        <td>@(user.IsAdmin ? "✅" : "❌")</td>
+                        <td>@user.CreatedAt.ToString("dd.MM.yyyy")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

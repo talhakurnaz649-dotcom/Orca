@@ -1,0 +1,102 @@
+﻿@model Orca.Models.User
+@{
+    ViewData["Title"] = "Profilim";
+    var orders = ViewBag.Orders as List<Orca.Models.Order>;
+}
+
+<div class="section" style="max-width:900px;margin:0 auto;">
+
+    <div class="section-header">
+        <div class="section-title">👤 Profilim</div>
+    </div>
+
+    <div style="display:flex;gap:1rem;margin-bottom:2rem;flex-wrap:wrap;">
+        <button onclick="showTab('orders')" class="btn-primary" id="tab-orders">📦 Siparişlerim</button>
+        <button onclick="showTab('inventory')" class="btn-secondary" id="tab-inventory">🎮 Envanterim</button>
+        <button onclick="showTab('wallet')" class="btn-secondary" id="tab-wallet">💰 Cüzdan</button>
+    </div>
+
+    <div id="tab-content-orders">
+        @if (orders == null || !orders.Any())
+        {
+            <div class="auth-card" style="text-align:center;color:#7777aa;">
+                Henüz siparişin yok.
+            </div>
+        }
+        else
+        {
+            @foreach (var order in orders)
+            {
+                <div class="auth-card" style="margin-bottom:1rem;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+                        <span style="color:#00e5ff;font-weight:600;">Sipariş #@order.OrderId</span>
+                        <span style="color:#7777aa;font-size:13px;">@order.OrderDate.ToString("dd.MM.yyyy HH:mm")</span>
+                        <span style="color:#b500ff;">@order.Status</span>
+                    </div>
+                    @foreach (var detail in order.OrderDetails)
+                    {
+                        <div style="display:flex;justify-content:space-between;align-items:center;padding:0.5rem 0;border-bottom:1px solid #1a1a2e;">
+    <div style="display:flex;align-items:center;gap:0.75rem;">
+        <img src="@detail.Game.ImageUrl" style="width:50px;height:50px;object-fit:cover;border-radius:6px;" onerror="this.style.display='none'" />
+        <span>@detail.Game.Title x@(detail.Quantity)</span>
+    </div>
+    <span>₺@(detail.UnitPrice * detail.Quantity)</span>
+</div>
+                    }
+                    <div style="text-align:right;margin-top:0.5rem;font-weight:700;color:#00e5ff;">
+                        Toplam: ₺@order.TotalAmount
+                    </div>
+                </div>
+            }
+        }
+    </div>
+
+    <div id="tab-content-inventory" style="display:none;">
+        <div style="display:flex;flex-wrap:wrap;gap:1rem;">
+            @if (orders == null || !orders.Any())
+            {
+                <div class="auth-card" style="text-align:center;color:#7777aa;width:100%;">
+                    Henüz oyunun yok.
+                </div>
+            }
+            else
+            {
+                @foreach (var order in orders)
+                {
+                    @foreach (var detail in order.OrderDetails)
+                    {
+                        <div class="auth-card" style="width:160px;text-align:center;padding:1rem;">
+                            <img src="@detail.Game.ImageUrl" style="width:100%;border-radius:8px;margin-bottom:0.5rem;" onerror="this.style.display='none'" />
+                            <div style="font-size:13px;font-weight:600;">@detail.Game.Title</div>
+                        </div>
+                    }
+                }
+            }
+        </div>
+    </div>
+
+    <div id="tab-content-wallet" style="display:none;">
+        <div class="auth-card" style="text-align:center;">
+            <div style="font-size:2rem;margin-bottom:0.5rem;">💰</div>
+            <div style="color:#7777aa;margin-bottom:1rem;">Toplam Harcama</div>
+            <div style="font-size:2rem;font-weight:700;color:#00e5ff;">
+                ₺@(orders?.Sum(o => o.TotalAmount) ?? 0)
+            </div>
+            <div style="color:#7777aa;font-size:13px;margin-top:0.5rem;">
+                @(orders?.Count ?? 0) sipariş
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+function showTab(tab) {
+    ['orders', 'inventory', 'wallet'].forEach(t => {
+        document.getElementById('tab-content-' + t).style.display = 'none';
+        document.getElementById('tab-' + t).className = 'btn-secondary';
+    });
+    document.getElementById('tab-content-' + tab).style.display = 'block';
+    document.getElementById('tab-' + tab).className = 'btn-primary';
+}
+</script>

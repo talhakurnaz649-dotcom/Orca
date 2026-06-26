@@ -1,0 +1,11 @@
+﻿@{
+    ViewData["Title"] = "Sipariş Tamamlandı";
+}
+
+<div class="section" style="text-align:center;padding:4rem 2rem;">
+    <i class="ti ti-circle-check" style="font-size:80px;color:#00f5ff;display:block;margin-bottom:1rem;"></i>
+    <h1 class="detail-title" style="margin-bottom:1rem;">Siparişiniz Tamamlandı!</h1>
+    <p style="color:#7777aa;margin-bottom:2rem;">Teşekkürler @TempData["FullName"]! Oyunlarınız e-posta adresinize gönderilecektir.</p>
+    <a class="btn-primary" asp-controller="Cart" asp-action="DownloadReceipt" style="margin-right:1rem;">🧾 Dekontu İndir</a>
+    <a class="btn-primary" asp-controller="Home" asp-action="Index">Ana Sayfaya Dön</a>
+</div>

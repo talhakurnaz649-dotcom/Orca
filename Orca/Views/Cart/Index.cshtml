@@ -1,0 +1,55 @@
+﻿@model List<Orca.Models.CartItem>
+
+@{
+    ViewData["Title"] = "Sepet";
+}
+
+<div class="section">
+    <div class="section-header">
+        <div class="section-title">Sepetim</div>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="empty-cart">
+            <i class="ti ti-shopping-cart-off"></i>
+            <p>Sepetiniz boş.</p>
+            <a class="btn-primary" asp-controller="Game" asp-action="Index">Oyunlara Göz At</a>
+        </div>
+    }
+    else
+    {
+        <div class="cart-list">
+            @foreach (var item in Model)
+            {
+                <div class="cart-item">
+                    <div class="cart-thumb">
+                        @if (!string.IsNullOrEmpty(item.ImageUrl))
+                        {
+                            <img src="@item.ImageUrl" alt="@item.Title" style="width:60px;height:60px;object-fit:cover;border-radius:6px;" />
+                        }
+                        else
+                        {
+                            <span>🎮</span>
+                        }
+                    </div>
+                    <div class="cart-details">
+                        <div class="cart-title">@item.Title</div>
+                        <div class="cart-qty">Adet: @item.Quantity</div>
+                    </div>
+                    <div class="cart-price">₺@(item.Price * item.Quantity)</div>
+                    <a class="btn-remove" asp-controller="Cart" asp-action="Remove" asp-route-gameId="@item.GameId">
+                        <i class="ti ti-trash"></i>
+                    </a>
+                </div>
+            }
+        </div>
+
+        <div class="cart-total">
+            <span>Toplam</span>
+            <span class="game-price">₺@Model.Sum(c => c.Price * c.Quantity)</span>
+        </div>
+
+        <a class="btn-primary" asp-controller="Cart" asp-action="Checkout">Ödemeye Geç →</a>
+    }
+</div>
