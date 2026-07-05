@@ -1,4 +1,7 @@
-# Orca Denizcilik - Müşteri Arayüzü Portal Projesi
+﻿# Orca Denizcilik - Müşteri Arayüzü Portal Projesi
+
+![Proje ArayÃ¼zÃ¼](screenshot.jpg)
+
 
 Orca Denizcilik projesinin web arayüzü olup, deniz lojistiği süreçlerini, seferleri ve gemi detaylarını kullanıcıya sunan ön yüz/web portalı uygulamasıdır.
 
